@@ -9,6 +9,7 @@ public class Grid extends JPanel{
 	private int clicked;  //number of valid Cells clicked so far, game ends if this reaches 90
 	private int nFlags;   //number for how many marked mines there are, will be used for the bomb display GUI element
 	private boolean explode; //boolean for whether an exploded bomb was clicked or not
+	private boolean firstClick;
 	
 	private int lastPressedr;
 	private int lastPressedc;
@@ -18,22 +19,31 @@ public class Grid extends JPanel{
 	private final int N_COLS = 10;
 	private final int N_BOMBS = 10;
 	
+	public static final int height = 160;
+	public static final int width = 160;
+	
 	public Grid(){
 		grid = new Cell[N_ROWS][N_COLS];
 		bombs = new Cell[N_BOMBS];
 		clicked = 0;
 		nFlags = 10;
 		explode = false;
+		firstClick = true;
 		for(int i = 0;i<N_ROWS;i++){
 			for(int j = 0;j<N_COLS;j++){
 				grid[i][j]= new Cell(i,j);
 			}
 		}
-		setBombs();
-		setBoard();
+		
 	}
 	//next 3 methods will set up the board for a new game
-	private void setBombs(){
+	
+	private void init_board(int r, int c){
+		setBombs(r,c);
+		setBoard();
+	}
+	
+	private void setBombs(int row, int col){
 		int r;
 		int c;
 		int ctr = 0;
@@ -41,7 +51,7 @@ public class Grid extends JPanel{
 		while(ctr<N_BOMBS){
 			r = rn.nextInt(N_BOMBS);
 			c = rn.nextInt(N_BOMBS);
-			if(!grid[r][c].isBomb()){
+			if(r!=row&&c!=col&&!grid[r][c].isBomb()){
 				grid[r][c].setVal(-1);
 				bombs[ctr]=grid[r][c];
 				ctr++;
@@ -118,6 +128,10 @@ public class Grid extends JPanel{
 			boolean over = lastPressedr==r&&lastPressedc==c;
 			if(!explode&&clicked<90){   //will only work if the game hasn't ended, otherwise does nothing.
 				if(over&&grid[r][c].getState()!=6){
+					if(firstClick){
+						init_board(r,c);
+						firstClick = false;
+					}
 					Cell s = grid[r][c];
 					s.LReleasedSame();
 					if(s.getState()==6){
@@ -196,6 +210,10 @@ public class Grid extends JPanel{
 		return nFlags;
 	}
 	
+	public boolean firstClicked(){
+		return firstClick;
+	}
+	
 	public boolean gameOver(){
 		return clicked==90||explode;
 	}
@@ -211,4 +229,5 @@ public class Grid extends JPanel{
 	private boolean validCoord(int r, int c){
 		return r<10&&r>=0&&c<10&&c>=0;
 	}
+
 }

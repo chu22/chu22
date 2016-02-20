@@ -20,6 +20,9 @@ public class Cell {
 	private Image BOMB;																					//state 5
 	private Image VAL;																					//state 6
 	
+	public static final int height = 16;
+	public static final int width = 16;
+	
 	public Cell(int row, int col){
 		r = row;
 		c = col;

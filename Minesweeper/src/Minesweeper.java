@@ -12,9 +12,10 @@ public class Minesweeper extends JFrame {
 	private Grid g;
 	private TimePanel t;
 	private FlagPanel f;
+	private ResetPanel r;
 	
 	private Timer time;
-	private boolean firstPress;
+	private boolean firstClick;
 	
 	private final int FRAME_WIDTH = 170;
 	private final int FRAME_HEIGHT = 250;
@@ -29,16 +30,19 @@ public class Minesweeper extends JFrame {
 		g = new Grid();
 		t = new TimePanel();
 		f = new FlagPanel();
+		r = new ResetPanel();
 		time = new Timer(DELAY, new TimerHandler());
-		firstPress = true;
+		firstClick = true;
 		g.addMouseListener(new gridHandler());
+		r.addMouseListener(new ResetHandler());
 		add(f);
 		add(g);
 		add(t);
+		add(r);
 		f.setBounds(0, 0, Digit.width*2, Digit.height);
-		g.setBounds(0,Digit.height,170,170);
+		g.setBounds(0,ResetPanel.height + 5,Grid.width,Grid.height);
 		t.setBounds(FRAME_WIDTH-Digit.width*4, 0, Digit.width*4, Digit.height);
-		
+		r.setBounds(FRAME_WIDTH/2-ResetPanel.width,0,ResetPanel.width,ResetPanel.height);
 		
 		setResizable(false);
 	}
@@ -58,18 +62,22 @@ public class Minesweeper extends JFrame {
 	}
 	
 	public void reset(){
+		remove(f);
+		remove(g);
+		remove(t);
+		time.stop();
 		g = new Grid();
 		t = new TimePanel();
 		f = new FlagPanel();
-		time = new Timer(DELAY, new TimerHandler());
-		firstPress = true;
+		firstClick = true;
 		g.addMouseListener(new gridHandler());
 		add(f);
 		add(g);
 		add(t);
 		f.setBounds(0, 0, Digit.width*2, Digit.height);
-		g.setBounds(0,Digit.height,170,170);
+		g.setBounds(0,ResetPanel.height + 5,Grid.width,Grid.height);
 		t.setBounds(FRAME_WIDTH-Digit.width*4, 0, Digit.width*4, Digit.height);
+		
 	}
 	
 	
@@ -83,15 +91,15 @@ public class Minesweeper extends JFrame {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if(firstPress){
-				time.start();
-				firstPress = false;
-			}
 			g.mousePressed(e);
 			int n = g.getnFlags();
 			f.setCount(n);
 			g.repaint();
 			f.repaint();
+			if(!g.gameOver()){
+				r.gridPressed();
+				r.repaint();
+			}
 			
 		}
 
@@ -99,10 +107,60 @@ public class Minesweeper extends JFrame {
 		public void mouseReleased(MouseEvent e) {
 			g.mouseReleased(e);
 			g.repaint();
+			if(firstClick&&!g.firstClicked()){
+				time.start();
+				firstClick = false;
+			}
 			if(g.gameOver()){
 				time.stop();
+				if(g.gameWon()){
+					r.gameWon();
+				}
+				else{
+					r.gameLost();
+				}
 			}
+			else{
+				r.mouseReleased();
+			}
+			r.repaint();
 			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	private class ResetHandler implements MouseListener{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			r.resetPressed();
+			r.repaint();
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			r.mouseReleased();
+			r.repaint();
+			reset();
 		}
 
 		@Override
