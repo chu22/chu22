@@ -198,6 +198,9 @@ public class Grid extends JPanel{
 	//automatically marks all the bombs, which happens when the user wins by clicking on all the valid squares
 	private void markBombs(){
 		for(int i = 0;i<N_BOMBS;i++){
+			if(bombs[i].getState()!=2){
+				nFlags--;
+			}
 			bombs[i].flagBomb();
 		}
 	}

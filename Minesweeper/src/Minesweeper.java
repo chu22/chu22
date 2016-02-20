@@ -6,6 +6,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 public class Minesweeper extends JFrame {
@@ -13,6 +15,7 @@ public class Minesweeper extends JFrame {
 	private TimePanel t;
 	private FlagPanel f;
 	private ResetPanel r;
+	private Menu m;
 	
 	private Timer time;
 	private boolean firstClick;
@@ -27,18 +30,31 @@ public class Minesweeper extends JFrame {
         setTitle("Minesweeper");
 		setLayout(null);
 		setLocationRelativeTo(null);
+		
+		
 		g = new Grid();
 		t = new TimePanel();
 		f = new FlagPanel();
 		r = new ResetPanel();
+		m = new Menu();
 		time = new Timer(DELAY, new TimerHandler());
 		firstClick = true;
+		
+		
 		g.addMouseListener(new gridHandler());
 		r.addMouseListener(new ResetHandler());
+		m.getItem(0).addActionListener(new resetMenuHandler());
+		m.getItem(1).addActionListener(new scoresMenuHandler());
+		m.getItem(2).addActionListener(new exitMenuHandler());
+		m.getItem(3).addActionListener(new helpMenuHandler());
+		m.getItem(4).addActionListener(new aboutMenuHandler());
+		
+		
 		add(f);
 		add(g);
 		add(t);
 		add(r);
+		setJMenuBar(m);
 		f.setBounds(0, 0, Digit.width*2, Digit.height);
 		g.setBounds(0,ResetPanel.height + 5,Grid.width,Grid.height);
 		t.setBounds(FRAME_WIDTH-Digit.width*4, 0, Digit.width*4, Digit.height);
@@ -184,6 +200,66 @@ public class Minesweeper extends JFrame {
 			t.incTime();
 			t.repaint();
 			
+		}
+		
+	}
+	
+	private class resetMenuHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			reset();
+		}
+		
+	}
+	
+	private class scoresMenuHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			/*the following code is not to be used here--to be used for inputting name for high scores
+			 * 
+			 * String s = (String)JOptionPane.showInputDialog(
+                    Minesweeper.this,
+                    "Complete the sentence:\n"
+                    + "\"Green eggs and...\"",
+                    "Customized Dialog",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    "ham");
+				*/
+		}
+		
+	}
+	private class exitMenuHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//saveScores();
+			System.exit(0);
+		}
+		
+	}
+	private class helpMenuHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JOptionPane.showMessageDialog(Minesweeper.this,
+				    "Insert help info",
+				    "Help",
+				    JOptionPane.PLAIN_MESSAGE);
+		}
+		
+	}
+	private class aboutMenuHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JOptionPane.showMessageDialog(Minesweeper.this,
+				    "Insert about info",
+				    "About",
+				    JOptionPane.PLAIN_MESSAGE);
 		}
 		
 	}
