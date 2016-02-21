@@ -1,13 +1,14 @@
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 public class Minesweeper extends JFrame {
@@ -20,6 +21,9 @@ public class Minesweeper extends JFrame {
 	
 	private Timer time;
 	private boolean firstClick;
+	
+	JTable scoresTable;
+	JScrollPane scoresPane;
 	
 	private final int FRAME_WIDTH = 170;
 	private final int FRAME_HEIGHT = 250;
@@ -40,6 +44,8 @@ public class Minesweeper extends JFrame {
 		m = new Menu();
 		h = new HighScores();
 		time = new Timer(DELAY, new TimerHandler());
+		scoresPane= new  JScrollPane();
+		scoresTable = h.getTable();
 		firstClick = true;
 		
 		
@@ -52,13 +58,14 @@ public class Minesweeper extends JFrame {
 		m.getItem(4).addActionListener(new aboutMenuHandler());
 		m.getItem(5).addActionListener(new resetScoresMenuHandler());
 		
+		scoresPane.setPreferredSize(new Dimension(300, 220));
+		
 		
 		add(f);
 		add(g);
 		add(t);
 		add(r);
 		setJMenuBar(m);
-		h.loadScoreFile();
 		
 		
 		f.setBounds(0, 0, Digit.width*2, Digit.height);
@@ -230,6 +237,7 @@ public class Minesweeper extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			r.mouseReleased();
 			reset();
 		}
 		
@@ -240,9 +248,12 @@ public class Minesweeper extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			String p = h.printScores();
+			scoresPane.getViewport().remove( scoresTable );
+			scoresTable = h.getTable();
+			scoresPane.getViewport().add( scoresTable );
+			
 			JOptionPane.showMessageDialog(Minesweeper.this,
-				    p,
+				    scoresPane,
 				    "High Scores",
 				    JOptionPane.PLAIN_MESSAGE);
 			
@@ -284,7 +295,7 @@ public class Minesweeper extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JOptionPane.showMessageDialog(Minesweeper.this,
-				    "Insert about info",
+				    "MINESWEEPER [CS342 Project2]\nVersion 1.0 (2/21/2016)\nDeveloped by Lawrence Chu and Kevin Tang",
 				    "About",
 				    JOptionPane.PLAIN_MESSAGE);
 		}

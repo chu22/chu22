@@ -6,20 +6,28 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class HighScores {
 	
 	private ArrayList<Score> scores;
+	private JTable scoreTable;
+	private DefaultTableModel model;
 	
 	private final int MAX = 10;
+	private final String[] COL_NAMES = {"  ","Name", "Score"};
 	
-	 private static final String SCORE_FILE = "scores.dat";
+	private static final String SCORE_FILE = "scores.dat";
 	 
-	 ObjectOutputStream out = null;
-	 ObjectInputStream in = null;
+	ObjectOutputStream out = null;
+	ObjectInputStream in = null;
 	
 	public HighScores(){
 		scores = new ArrayList<Score>(MAX);
+		scoreTable = new JTable();
+		loadScoreFile();
+		updateTable();
 	}
 	
 	public boolean isTopTen(Score s){
@@ -39,7 +47,7 @@ public class HighScores {
 		updateScoreFile();
 	}
 	
-	public void loadScoreFile() {
+	private void loadScoreFile() {
         try {
             in = new ObjectInputStream(new FileInputStream(SCORE_FILE));
             scores = (ArrayList<Score>) in.readObject();
@@ -61,10 +69,11 @@ public class HighScores {
         }
 	}
 	
-	public void updateScoreFile() {
+	private void updateScoreFile() {
         try {
             out = new ObjectOutputStream(new FileOutputStream(SCORE_FILE));
             out.writeObject(scores);
+            updateTable();
         } catch (FileNotFoundException e) {
             System.out.println("FNF Error: " + e.getMessage() + ",the program will try and make a new file");
         } catch (IOException e) {
@@ -85,11 +94,12 @@ public class HighScores {
 		updateScoreFile();
 	}
 	
+	
 	public String printScores(){
-		String str = "     Name                       Score\n";
+		String str = "     Name\t\tScore\n";
 		int ctr = 1;
 		for(Score s : scores){
-			str = str + ctr + ". " + s.getName() + "                " + s.getScore() + "\n";
+			str = str + ctr + ". " + s.getName() + "\t\t" + s.getScore() + "\n";
 			ctr++;
 		}
 		while(ctr<10){
@@ -97,6 +107,32 @@ public class HighScores {
 			ctr++;
 		}
 		return str;
+	}
+	
+	private void updateTable(){
+		String[][] scoreGrid = new String[10][3];
+		int ctr = 0;
+		for(Score s : scores){
+			scoreGrid[ctr][0] = ctr+1 + ".";
+			scoreGrid[ctr][1] = s.getName();
+			scoreGrid[ctr][2] = s.getScore() + "";
+			ctr++;
+		}
+		while(ctr<10){
+			scoreGrid[ctr][0] = ctr+1 + ".";
+			scoreGrid[ctr][1] = "";
+			scoreGrid[ctr][2] = "";
+			ctr++;
+		}
+		model = new DefaultTableModel(scoreGrid, COL_NAMES);
+		scoreTable.setModel(model);
+		scoreTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+		scoreTable.getColumnModel().getColumn(1).setPreferredWidth(235);
+		scoreTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+	}
+	
+	public JTable getTable(){
+		return scoreTable;
 	}
 	
 }

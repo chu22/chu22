@@ -9,7 +9,6 @@ public class Score implements Comparable<Score>, Serializable{
 	
 	public Score(int x){
 		score = x;
-		name = "Anonymous";
 	}
 	
 	public void addName(String n){
