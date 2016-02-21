@@ -1,12 +1,12 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -16,6 +16,7 @@ public class Minesweeper extends JFrame {
 	private FlagPanel f;
 	private ResetPanel r;
 	private Menu m;
+	private HighScores h;
 	
 	private Timer time;
 	private boolean firstClick;
@@ -37,6 +38,7 @@ public class Minesweeper extends JFrame {
 		f = new FlagPanel();
 		r = new ResetPanel();
 		m = new Menu();
+		h = new HighScores();
 		time = new Timer(DELAY, new TimerHandler());
 		firstClick = true;
 		
@@ -48,6 +50,7 @@ public class Minesweeper extends JFrame {
 		m.getItem(2).addActionListener(new exitMenuHandler());
 		m.getItem(3).addActionListener(new helpMenuHandler());
 		m.getItem(4).addActionListener(new aboutMenuHandler());
+		m.getItem(5).addActionListener(new resetScoresMenuHandler());
 		
 		
 		add(f);
@@ -55,6 +58,9 @@ public class Minesweeper extends JFrame {
 		add(t);
 		add(r);
 		setJMenuBar(m);
+		h.loadScoreFile();
+		
+		
 		f.setBounds(0, 0, Digit.width*2, Digit.height);
 		g.setBounds(0,ResetPanel.height + 5,Grid.width,Grid.height);
 		t.setBounds(FRAME_WIDTH-Digit.width*4, 0, Digit.width*4, Digit.height);
@@ -93,8 +99,9 @@ public class Minesweeper extends JFrame {
 		f.setBounds(0, 0, Digit.width*2, Digit.height);
 		g.setBounds(0,ResetPanel.height + 5,Grid.width,Grid.height);
 		t.setBounds(FRAME_WIDTH-Digit.width*4, 0, Digit.width*4, Digit.height);
-		
 	}
+	
+	//Event Handlers
 	
 	
 	private class gridHandler implements MouseListener{
@@ -108,8 +115,7 @@ public class Minesweeper extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			g.mousePressed(e);
-			int n = g.getnFlags();
-			f.setCount(n);
+			f.setCount(g.getnFlags());
 			g.repaint();
 			f.repaint();
 			if(!g.gameOver()){
@@ -129,8 +135,24 @@ public class Minesweeper extends JFrame {
 			}
 			if(g.gameOver()){
 				time.stop();
+				f.setCount(g.getnFlags());
+				f.repaint();
 				if(g.gameWon()){
 					r.gameWon();
+					Score s = new Score(t.getTime());
+					if(h.isTopTen(s)){
+						String name = (String)JOptionPane.showInputDialog(
+			                    Minesweeper.this,
+			                    "Congratualations! You have a new high score!\n"
+			                    + "Enter your name:",
+			                    "New High Score", JOptionPane.PLAIN_MESSAGE, null, null, null);
+						if(name!=null){
+							s.addName(name);
+							h.addScore(s);
+						}
+						
+						
+					}
 				}
 				else{
 					r.gameLost();
@@ -217,21 +239,27 @@ public class Minesweeper extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			/*the following code is not to be used here--to be used for inputting name for high scores
-			 * 
-			 * String s = (String)JOptionPane.showInputDialog(
-                    Minesweeper.this,
-                    "Complete the sentence:\n"
-                    + "\"Green eggs and...\"",
-                    "Customized Dialog",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "ham");
-				*/
+			
+			String p = h.printScores();
+			JOptionPane.showMessageDialog(Minesweeper.this,
+				    p,
+				    "High Scores",
+				    JOptionPane.PLAIN_MESSAGE);
+			
+			
 		}
 		
 	}
+	
+	private class resetScoresMenuHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			h.resetScoreFile();
+		}
+		
+	}
+	
 	private class exitMenuHandler implements ActionListener{
 
 		@Override

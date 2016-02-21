@@ -16,11 +16,13 @@ public class Menu extends JMenuBar{
 		Help.setMnemonic(KeyEvent.VK_H);
 		add(Game);
 		add(Help);
-		items = new JMenuItem[5];
+		items = new JMenuItem[6];
 		items[0] = new JMenuItem("Reset", KeyEvent.VK_R);
 		Game.add(items[0]);
 		items[1] = new JMenuItem("Top Ten", KeyEvent.VK_T);
 		Game.add(items[1]);
+		items[5] = new JMenuItem("Reset Top Ten", KeyEvent.VK_E);
+		Game.add(items[5]);
 		items[2] = new JMenuItem("Exit", KeyEvent.VK_X);
 		Game.add(items[2]);
 		items[3] = new JMenuItem("Help", KeyEvent.VK_H);

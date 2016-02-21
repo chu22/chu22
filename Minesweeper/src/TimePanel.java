@@ -51,8 +51,8 @@ public class TimePanel extends JPanel{
 		ones = Digit.d[o];
 	}
 	
-	public String getTime(){
-		return dh + "" + dt + "" + d1;
+	public int getTime(){
+		return 100*dh+10*dt+d1;
 	}
 	
 	@Override
