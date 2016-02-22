@@ -2,8 +2,7 @@
  * Minesweeper.java 
  *
  * The main minesweeper class/frame
- * This class contains all event handlers and 
- * controls communications between the separate panels and menu options.
+ * This class contains all event handlers and controls communications between the separate panels and menu options.
  */
 
 /********************************
@@ -27,31 +26,39 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 public class Minesweeper extends JFrame {
-	private Grid g;
-	private TimePanel t;
-	private FlagPanel f;
-	private ResetPanel r;
-	private Menu m;
-	private HighScores h;
+	/* Class instances */
+	private Grid g;				//main game grid
+	private TimePanel t;		//timer display panel
+	private FlagPanel f;		//number of flags display panel
+	private ResetPanel r;		//reset button
+	private Menu m;				//menus
+	private HighScores h;		//high score holder
 	
-	private Timer time;
-	private boolean firstClick;
+	private Timer time;			
+	private boolean firstClick;	//check if first click of the game, used in conjunction with Grid class firstClick variable to ensure 
+								//the timer/grid is not set until after the first valid click. 
 	
-	JTable scoresTable;
+	/* High score display elements */
+	JTable scoresTable;	
 	JScrollPane scoresPane;
 	
+	/* Frame dimensions */
 	private final int FRAME_WIDTH = 170;
 	private final int FRAME_HEIGHT = 250;
+	
+	/* Timer delay */
 	private final int DELAY = 1000;
 	
+	 /* Game Instance */
 	public Minesweeper(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setTitle("Minesweeper");
 		setLayout(null);
 		setLocationRelativeTo(null);
+		setResizable(false);
 		
-		
+		/* Initiate class instances */
 		g = new Grid();
 		t = new TimePanel();
 		f = new FlagPanel();
@@ -61,9 +68,10 @@ public class Minesweeper extends JFrame {
 		time = new Timer(DELAY, new TimerHandler());
 		scoresPane= new  JScrollPane();
 		scoresTable = h.getTable();
+		
 		firstClick = true;
 		
-		
+		/* Add Event Handlers */
 		g.addMouseListener(new gridHandler());
 		r.addMouseListener(new ResetHandler());
 		m.getItem(0).addActionListener(new resetMenuHandler());
@@ -73,24 +81,22 @@ public class Minesweeper extends JFrame {
 		m.getItem(4).addActionListener(new aboutMenuHandler());
 		m.getItem(5).addActionListener(new resetScoresMenuHandler());
 		
-		scoresPane.setPreferredSize(new Dimension(300, 220));
-		
-		
+		/* Add class instances */
 		add(f);
 		add(g);
 		add(t);
 		add(r);
 		setJMenuBar(m);
 		
-		
+		/* Set dimensions for panels and grid */
 		f.setBounds(0, 0, Digit.width*2, Digit.height);
 		g.setBounds(0,ResetPanel.height + 5,Grid.width,Grid.height);
 		t.setBounds(FRAME_WIDTH-Digit.width*4, 0, Digit.width*4, Digit.height);
 		r.setBounds(FRAME_WIDTH/2-ResetPanel.width,0,ResetPanel.width,ResetPanel.height);
-		
-		setResizable(false);
+		scoresPane.setPreferredSize(new Dimension(300, 220));
 	}
 	
+	/* Main */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -123,23 +129,22 @@ public class Minesweeper extends JFrame {
 		t.setBounds(FRAME_WIDTH-Digit.width*4, 0, Digit.width*4, Digit.height);
 	}
 	
-	//Event Handlers
+	 /* EVENT HANDLERS */
 	
 	private class gridHandler implements MouseListener{
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			
-			
+				
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			g.mousePressed(e);
-			f.setCount(g.getnFlags());
+			g.mousePressed(e);					// Determine and manage program based on which button was clicked
+			f.setCount(g.getnFlags());			//Retrieves number of flags and updates the flag panel
 			g.repaint();
 			f.repaint();
-			if(!g.gameOver()){
+			if(!g.gameOver()){					//If game is not over, change :) into :O on reset button
 				r.gridPressed();
 				r.repaint();
 			}
@@ -148,39 +153,39 @@ public class Minesweeper extends JFrame {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			g.mouseReleased(e);
+			g.mouseReleased(e);				 	// Determine and manage program based on which button was released
 			g.repaint();
-			if(firstClick&&!g.firstClicked()){
-				time.start();
+			if(firstClick&&!g.firstClicked()){ 	// If this is the first click of the game and both press/release occurred on the same cell,
+				time.start();					// start the timer
 				firstClick = false;
 			}
 			if(g.gameOver()){
-				time.stop();
+				time.stop();					// Freeze Timer
 				f.setCount(g.getnFlags());
 				f.repaint();
 				if(g.gameWon()){
-					r.gameWon();
-					Score s = new Score(t.getTime());
-					if(h.isTopTen(s)){
-						String name = (String)JOptionPane.showInputDialog(
+					r.gameWon();															//set reset button to B-)
+					Score s = new Score(t.getTime());										//create new score based on time
+					if(h.isTopTen(s)){														//if a top ten score
+						String name = (String)JOptionPane.showInputDialog(					//get user name
 			                    Minesweeper.this,
 			                    "Congratualations! You have a new high score!\n"
 			                    + "Enter your name:",
 			                    "New High Score", JOptionPane.PLAIN_MESSAGE, null, null, null);
-						if(name!=null){
-							s.addName(name);
-							h.addScore(s);
+						if(name!=null){														//if user clicked OK button
+							s.addName(name);												//add name to score
+							h.addScore(s);													//add score to high scores
 						}
 						
 						
 					}
 				}
 				else{
-					r.gameLost();
+					r.gameLost();				//set reset button to X_X
 				}
 			}
-			else{
-				r.mouseReleased();
+			else{								//game not over
+				r.mouseReleased();				//reset reset button to :)
 			}
 			r.repaint();
 			
@@ -188,23 +193,20 @@ public class Minesweeper extends JFrame {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 		
 	}
-	
+		
 	private class ResetHandler implements MouseListener{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
@@ -228,13 +230,11 @@ public class Minesweeper extends JFrame {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 		
@@ -266,7 +266,7 @@ public class Minesweeper extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			scoresPane.getViewport().remove( scoresTable );
+			scoresPane.getViewport().remove( scoresTable );		//remove old table and add new table to high scores scrollpane
 			scoresTable = h.getTable();
 			scoresPane.getViewport().add( scoresTable );
 			
@@ -298,6 +298,9 @@ public class Minesweeper extends JFrame {
 		
 	}
 
+	 /* 
+	  * Helper function that contains text for helpMenuHandler ActionListener 
+	  */
 	 public String printHelp(){
 		   String str = "MINESWEEPER: HOW TO PLAY\n\n" +
 		     "The Objective:\n" +

@@ -190,9 +190,9 @@ public class Cell {
 	/*
 	 * Change label to BOMB, 
 	 * which will show an error label if the mine was incorrectly flagged
-	 * as a bomb or a bomb label if it was a bomb. This method will only 
-	 * be called by the showBombs method in the Grid class which is only 
-	 * called when the user loses.
+	 * as a bomb or a bomb label if it was an unmarked bomb. This method 
+	 * will only be called by the showBombs method in the Grid class which 
+	 * is only called when the user loses.
 	 */
 	public void showBomb(){
 		if(val==-1&&label!=FLAG){

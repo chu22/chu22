@@ -18,16 +18,17 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 public class TimePanel extends JPanel{
+	/* Digit images */
 	private Image hund;
 	private Image tens;
 	private Image ones;
 	
-	private int dh;
-	private int dt;
-	private int d1;
+	/* Digit numbers */
+	private int dh;	//hundreds
+	private int dt;	//tens
+	private int d1;	//ones
 	
-
-	
+	/* Initialize to zero */
 	public TimePanel(){
 		hund = Digit.d[0];
 		tens = Digit.d[0];
@@ -39,23 +40,23 @@ public class TimePanel extends JPanel{
 	}
 	
 	public void incTime(){
-		if(d1==9){
-			if(dt==9){
-				if(dh==9){
-					return;
+		if(d1==9){				//1s place is 9
+			if(dt==9){			//10s place is 9
+				if(dh==9){		//100s place is 9
+					return;		//do nothing
 				}
-				d1 = 0;
+				d1 = 0;			//else set to X00
 				dt = 0;
 				dh++;
 				setTime(dh,dt,d1);
 				return;
-			}
-			d1 = 0;
+			}					
+			d1 = 0;				//else set to XY0
 			dt++;
 			setTime(dh,dt,d1);
 			return;
 		}
-		d1++;
+		d1++;					//else set to XYZ
 		setTime(dh,dt,d1);
 	}
 	

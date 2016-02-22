@@ -28,7 +28,7 @@ public class FlagPanel extends JPanel{
 	}
 	
 	public void setCount(int n){
-		if(n<=0){
+		if(n<=0){				//if less than 0, will display 0, since we do not have a negative symbol sprite
 			ones = Digit.d[0];
 			tens = Digit.d[0];
 		}
