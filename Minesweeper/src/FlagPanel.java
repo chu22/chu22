@@ -1,3 +1,19 @@
+/* 
+ * FlagPanel.java 
+ * 
+ * This class is the panel that shows the number of flags "available" in the game
+ * Due to lack of a suitable sprite image, the counter will stop at zero
+ * even if the "available" flags is negative
+ * 
+ */
+
+/********************************
+* Lawrence Chu [chu22]
+* Kevin Tang [ktang20]
+* U. of Illinois at Chicago
+* CS342 - Project 2 (Minesweeper)
+*********************************/
+
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.JPanel;

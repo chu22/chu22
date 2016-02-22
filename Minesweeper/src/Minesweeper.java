@@ -1,3 +1,18 @@
+/* 
+ * Minesweeper.java 
+ *
+ * The main minesweeper class/frame
+ * This class contains all event handlers and 
+ * controls communications between the separate panels and menu options.
+ */
+
+/********************************
+* Lawrence Chu [chu22]
+* Kevin Tang [ktang20]
+* U. of Illinois at Chicago
+* CS342 - Project 2 (Minesweeper)
+*********************************/
+
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -279,15 +294,44 @@ public class Minesweeper extends JFrame {
 		}
 		
 	}
+
+	 public String printHelp(){
+		   String str = "MINESWEEPER: HOW TO PLAY\n\n" +
+		     "The Objective:\n" +
+		     "    - The goal of the game is to reveal all empty squares while avoiding the mines.\n" +
+		     "    - The faster you are able to do so, the better your score will be.\n\n" +
+		     
+		     "The Board:\n" +
+		     "    - The number on the top left indicates the number valid markers available.\n" +
+		     "    - The Smiley Face is a 'New Game' button.\n" +
+		     "    - The number on the top right indicates the amount of time that has passed.\n" +
+		     "    - There are 100 tiles and 10 mines in total.\n\n" +
+		     
+		     "Controls:\n" +
+		     "    - Left clicking on a tile will reveal either a number(s) or a mine.\n" +
+		     "         - If a mine is uncovered, you lose and the game is over.\n" +
+		     "         - If a number is revealed, it indicates the number of mines there are in the surrounding 8 tiles.\n" +
+		     "    - Right clicking on a blank, unrevealed tile will mark the mine with a flag. This should be done when\n" +
+		     "      you suspect a mine is under the tile.\n" + 
+		     "         - If you are unsure, right clicking a marked tile will turn it into a question mark.\n" +
+		     "         - Note that there can be as many flags on the board as there are tiles, but the game will only finish\n" +
+		     "           if there are 10 or less flags on the board (having more than 10 means you marked a tile with no mine).\n" +
+		     "     - Clicking the Smiley Face with any mouse button will start a new game.\n";
+		   return str;
+		 }
+
+	
 	private class helpMenuHandler implements ActionListener{
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(Minesweeper.this,
-				    "Insert help info",
-				    "Help",
-				    JOptionPane.PLAIN_MESSAGE);
-		}
+		  public void actionPerformed(ActionEvent e) {
+		   String p = printHelp();
+		   JOptionPane.showMessageDialog(Minesweeper.this,
+		        p,
+		        "Help",
+		        JOptionPane.PLAIN_MESSAGE);
+		  }
+
 		
 	}
 	private class aboutMenuHandler implements ActionListener{
@@ -295,11 +339,13 @@ public class Minesweeper extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JOptionPane.showMessageDialog(Minesweeper.this,
-				    "MINESWEEPER [CS342 Project2]\nVersion 1.0 (2/21/2016)\nDeveloped by Lawrence Chu and Kevin Tang",
-				    "About",
-				    JOptionPane.PLAIN_MESSAGE);
-		}
+					 "MINESWEEPER [U. of Illinois at Chicago: CS342 - Project2]\n" +
+						        "Version 1.0 (2/21/2016)\n" +
+						        "Developed by :\n    Lawrence Chu [chu22@uic.edu]\n    Kevin Tang [ktang20@uic.edu]",
+						        "About",
+						        JOptionPane.PLAIN_MESSAGE);
 		
-	}
+		}
 
+	}
 }

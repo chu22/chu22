@@ -1,3 +1,19 @@
+/* 
+ * Score.java 
+ *
+ * This class contains the name and score of a particular game
+ * It implements serializable and comparable in order to function
+ * with object read/write streams and built in sorting functions
+ * 
+ */
+
+/********************************
+* Lawrence Chu [chu22]
+* Kevin Tang [ktang20]
+* U. of Illinois at Chicago
+* CS342 - Project 2 (Minesweeper)
+*********************************/
+
 import java.io.Serializable;
 
 public class Score implements Comparable<Score>, Serializable{

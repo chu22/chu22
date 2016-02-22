@@ -1,3 +1,19 @@
+/* 
+ * HighScores.java 
+ *
+ * This class maintains the list of high scores, using Score objects
+ * It will create, read, and write high scores to a file
+ * It also creates the JTable used to output high scores
+ * 
+ */
+
+/********************************
+* Lawrence Chu [chu22]
+* Kevin Tang [ktang20]
+* U. of Illinois at Chicago
+* CS342 - Project 2 (Minesweeper)
+*********************************/
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

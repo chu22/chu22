@@ -1,3 +1,18 @@
+/* 
+ * TimePanel.java 
+ * 
+ * This class is the panel that shows time elapsed in the game
+ * The maximum time is 999
+ * 
+*/
+
+/********************************
+* Lawrence Chu [chu22]
+* Kevin Tang [ktang20]
+* U. of Illinois at Chicago
+* CS342 - Project 2 (Minesweeper)
+*********************************/
+
 import java.awt.Graphics;
 import java.awt.Image;
 

@@ -1,3 +1,17 @@
+/* 
+ * Menu.java 
+ *
+ * This class is a repository for the menu items for the game
+ * 
+ */
+
+/********************************
+* Lawrence Chu [chu22]
+* Kevin Tang [ktang20]
+* U. of Illinois at Chicago
+* CS342 - Project 2 (Minesweeper)
+*********************************/
+
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -7,13 +21,13 @@ public class Menu extends JMenuBar{
 
 	private JMenu Help;
 	private JMenu Game;
-	private JMenuItem[] items; //{reset,scores,exit,help,about};
+	private JMenuItem[] items; //{reset,scores,exit,help,about}
 	
 	public Menu(){
 		Game = new JMenu("Game");
 		Game.setMnemonic(KeyEvent.VK_G);
 		Help = new JMenu("Help");
-		Help.setMnemonic(KeyEvent.VK_H);
+		Help.setMnemonic(KeyEvent.VK_L);
 		add(Game);
 		add(Help);
 		items = new JMenuItem[6];

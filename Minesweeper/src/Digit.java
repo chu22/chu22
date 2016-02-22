@@ -1,3 +1,18 @@
+/* 
+ * Digit.java 
+ * 
+ * This class is an image repository for the digits
+ * found in the Time/Flag panels
+ * 
+ * */
+
+/********************************
+* Lawrence Chu [chu22]
+* Kevin Tang [ktang20]
+* U. of Illinois at Chicago
+* CS342 - Project 2 (Minesweeper)
+*********************************/
+
 import java.awt.Image;
 
 import javax.swing.ImageIcon;

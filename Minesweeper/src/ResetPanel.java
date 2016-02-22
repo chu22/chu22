@@ -1,3 +1,10 @@
+/* 
+ * ResetPanel.java 
+ * 
+ * This class is the panel that contains the reset/smiley button
+ * 
+*/
+
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
