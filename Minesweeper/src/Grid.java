@@ -220,11 +220,23 @@ public class Grid extends JPanel{
 		}
 	}
 	
-/*	public void doubleMouseReleased(MouseEvent e){
+	private int calcFlags(int r, int c){
+		int v=0;
+		for(int i = r-1;i<=r+1;i++){             //using a 3x3 for loop to check adjacency, to cut down on if statements/code clutter
+			for(int j = c-1;j<=c+1;j++){
+				if(grid[r][c].isAdjacent(i,j)&&grid[i][j].getState()==2){
+					v++;
+				}
+			}
+		}
+		return v;
+	}
+	
+	public void doubleMouseReleased(MouseEvent e){
 		int c = convertPos(e.getX());
 		int r = convertPos(e.getY());
 		boolean over = lastPressedr==r&&lastPressedc==c;
-		if(!explode&&clicked<90){
+		if(!explode&&clicked<90&&over&&grid[r][c].getState()==6&&calcFlags(r,c)==grid[r][c].getVal()){	
 			for(int i = r-1;i<=r+1;i++){
 				for(int j = c-1;j<=c+1;j++){
 					if(!explode&&grid[r][c].isAdjacent(i,j)){
@@ -233,7 +245,7 @@ public class Grid extends JPanel{
 				}
 			}
 		}
-	}*/
+	}
 	
 	/*
 	 * Shows cell indicated by r and c, will recursively call if cell value is zero.
@@ -242,11 +254,11 @@ public class Grid extends JPanel{
 		Cell s = grid[r][c];
 		if(s.getState()==0){
 			s.showVal();
-			/*if(s.isBomb()){
+			if(s.isBomb()){
 				explode = true;
 				showBombs();
-			}*/
-			//else{
+			}
+			else{
 				clicked++;
 				System.out.println("clicked: " + clicked);  
 				System.out.println("count: " + Cell.count);
@@ -259,7 +271,7 @@ public class Grid extends JPanel{
 						}
 					}
 				}
-			//}
+			}
 		}
 	}
 	

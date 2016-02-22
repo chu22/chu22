@@ -145,19 +145,19 @@ public class Minesweeper extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			bothDown = (e.getModifiersEx() & BOTH) == BOTH;	//get modifiers for event, which is a mask of which buttons are pressed, and compare with BOTH
-			if(!bothDown){							//disable actions if one mouse button is already pressed
-				g.mousePressed(e);					// Determine and manage program based on which button was clicked
-				f.setCount(g.getnFlags());			//Retrieves number of flags and updates the flag panel
+			if(!bothDown){									//disable actions if one mouse button is already pressed
+				g.mousePressed(e);							// Determine and manage program based on which button was clicked
+				f.setCount(g.getnFlags());					//Retrieves number of flags and updates the flag panel
 				g.repaint();
 				f.repaint();
-				if(!g.gameOver()){					//If game is not over, change :) into :O on reset button
+				if(!g.gameOver()){							//If game is not over, change :) into :O on reset button
 					r.gridPressed();
 					r.repaint();
 				}
 			}
-/*			else if(bothDown&&e.getButton() == MouseEvent.BUTTON1){
+			else if(bothDown&&e.getButton() == MouseEvent.BUTTON1){
 				bothDown = false;
-			}*/
+			}
 			
 		}
 
@@ -194,10 +194,10 @@ public class Minesweeper extends JFrame {
 					r.gameLost();						//set reset button to X_X
 				}
 			}
-			/*else if(bothDown&&(e.getModifiersEx() & BOTH)==0){
+			else if(bothDown&&(e.getModifiersEx() & BOTH)==0){
 				g.doubleMouseReleased(e);
 				r.mouseReleased();
-			}*/
+			}
 			else if((e.getModifiersEx() & BOTH)==0){	//game not over and neither mouse button is pressed			/
 				r.mouseReleased();						//change reset button to :)
 			}

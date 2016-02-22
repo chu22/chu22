@@ -106,6 +106,9 @@ public class Cell {
 		return label;
 	}
 	
+	public int getVal(){
+		return val;
+	}
 	/* LABEL CHANGES BASED ON MOUSE CLICKS */
 	
 	/*
