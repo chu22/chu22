@@ -161,6 +161,8 @@ public class Grid extends JPanel{
 	    }	    
 	    else if(e.getButton() == MouseEvent.BUTTON3)	//Right mouse click
 	    {
+	    	lastPressedr = -1;				//setting these to -1 denotes that the right button is pressed by itself
+			lastPressedc = -1;
 	    	if(!explode&&clicked<90&&validCoord(r,c)){
 				Cell s = grid[r][c];
 				s.RPressed();
@@ -213,7 +215,7 @@ public class Grid extends JPanel{
 						}
 					}
 				}
-				else{										
+				else if(validCoord(lastPressedr,lastPressedc)){			//ensures left button was last button to be pressed by itself									
 					grid[lastPressedr][lastPressedc].LReleasedOther();  //cell that is being released was not pressed
 				}
 			}
@@ -232,15 +234,45 @@ public class Grid extends JPanel{
 		return v;
 	}
 	
+	public void doubleMousePressed(MouseEvent e){
+		int c = convertPos(e.getX());
+		int r = convertPos(e.getY());
+		boolean over = lastPressedr==r&&lastPressedc==c;
+		if(!explode&&clicked<90&&over&&grid[r][c].getState()==6){	
+			for(int i = r-1;i<=r+1;i++){
+				for(int j = c-1;j<=c+1;j++){
+					if(grid[r][c].isAdjacent(i,j)){
+						grid[i][j].LPressed();
+					}
+				}
+			}
+		}
+	}
+	
 	public void doubleMouseReleased(MouseEvent e){
 		int c = convertPos(e.getX());
 		int r = convertPos(e.getY());
 		boolean over = lastPressedr==r&&lastPressedc==c;
-		if(!explode&&clicked<90&&over&&grid[r][c].getState()==6&&calcFlags(r,c)==grid[r][c].getVal()){	
-			for(int i = r-1;i<=r+1;i++){
-				for(int j = c-1;j<=c+1;j++){
-					if(!explode&&grid[r][c].isAdjacent(i,j)){
-						showAdj(i,j);
+		if(!explode&&clicked<90){
+			if(over&&calcFlags(r,c)==grid[r][c].getVal()){
+				for(int i = r-1;i<=r+1;i++){
+					for(int j = c-1;j<=c+1;j++){
+						if(!explode&&grid[r][c].isAdjacent(i,j)){
+							showAdj(i,j);
+						}
+					}
+				}
+			}
+			else{
+				r = lastPressedr;
+				c = lastPressedc;
+				if(validCoord(r,c)){
+					for(int i = r-1;i<=r+1;i++){
+						for(int j = c-1;j<=c+1;j++){
+							if(grid[r][c].isAdjacent(i,j)){
+								grid[i][j].LReleasedOther();
+							}
+						}
 					}
 				}
 			}
@@ -252,7 +284,7 @@ public class Grid extends JPanel{
 	 */
 	private void showAdj(int r, int c){
 		Cell s = grid[r][c];
-		if(s.getState()==0){
+		if(s.getState()==0||s.getState()==1){
 			s.showVal();
 			if(s.isBomb()){
 				explode = true;
@@ -260,6 +292,9 @@ public class Grid extends JPanel{
 			}
 			else{
 				clicked++;
+				if(clicked==90){
+					markBombs();
+				}
 				System.out.println("clicked: " + clicked);  
 				System.out.println("count: " + Cell.count);
 				if(s.isZero()){						

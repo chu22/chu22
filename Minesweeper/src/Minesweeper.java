@@ -155,8 +155,9 @@ public class Minesweeper extends JFrame {
 					r.repaint();
 				}
 			}
-			else if(bothDown&&e.getButton() == MouseEvent.BUTTON1){
-				bothDown = false;
+			else{
+				g.doubleMousePressed(e);
+				g.repaint();
 			}
 			
 		}
@@ -164,11 +165,14 @@ public class Minesweeper extends JFrame {
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			g.mouseReleased(e);				 	// Determine and manage program based on which button was released
-			g.repaint();
 			if(firstClick&&!g.firstClicked()){ 	// If this is the first click of the game and both press/release occurred on the same cell,
 				time.start();					// start the timer
 				firstClick = false;
 			}
+			if(bothDown&&(e.getModifiersEx() & BOTH)==0){
+				g.doubleMouseReleased(e);
+			}
+			g.repaint();
 			if(g.gameOver()){
 				time.stop();					// Freeze Timer
 				f.setCount(g.getnFlags());
@@ -193,10 +197,6 @@ public class Minesweeper extends JFrame {
 				else{
 					r.gameLost();						//set reset button to X_X
 				}
-			}
-			else if(bothDown&&(e.getModifiersEx() & BOTH)==0){
-				g.doubleMouseReleased(e);
-				r.mouseReleased();
 			}
 			else if((e.getModifiersEx() & BOTH)==0){	//game not over and neither mouse button is pressed			/
 				r.mouseReleased();						//change reset button to :)
