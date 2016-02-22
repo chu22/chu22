@@ -151,18 +151,16 @@ public class Grid extends JPanel{
 	public void mousePressed(MouseEvent e) {
 		int c = convertPos(e.getX());
 		int r = convertPos(e.getY());
+		lastPressedr = r;
+		lastPressedc = c;
 		if(e.getButton() == MouseEvent.BUTTON1)			//Left mouse click
 	    {
 			if(!explode&&clicked<90&&validCoord(r,c)){	//registers click only if game not ended and mouse clicks onto board
-					lastPressedr = r;
-					lastPressedc = c;
 					grid[r][c].LPressed();
 			}
 	    }	    
 	    else if(e.getButton() == MouseEvent.BUTTON3)	//Right mouse click
 	    {
-	    	lastPressedr = -1;				//setting these to -1 denotes that the right button is pressed by itself
-			lastPressedc = -1;
 	    	if(!explode&&clicked<90&&validCoord(r,c)){
 				Cell s = grid[r][c];
 				s.RPressed();
@@ -189,39 +187,46 @@ public class Grid extends JPanel{
 						init_board(r,c);						//do not initialize board until first click
 						firstClick = false;
 					}
-					Cell s = grid[r][c];
-					s.LReleasedSame();
-					if(s.getState()==6){						//cell has value shown now
-						if(s.isBomb()){
-							explode = true;
-							showBombs();						//game lost, show where bombs are
-						}
-						else{									
-							if(s.isZero()){          			//if zero, automatically show adjacent cells
-								for(int i = r-1;i<=r+1;i++){
-									for(int j = c-1;j<=c+1;j++){
-										if(grid[r][c].isAdjacent(i,j)){
-											showAdj(i,j);
-										}
-									}
-								}
-							}
-							clicked++;
-							System.out.println("clicked: " + clicked);	//debugging info
-							System.out.println("count: " + Cell.count);
-							if(clicked==90){
-								markBombs();
-							}
-						}
-					}
+					clickCell(r,c);
 				}
-				else if(validCoord(lastPressedr,lastPressedc)){			//ensures left button was last button to be pressed by itself									
+				else{									
 					grid[lastPressedr][lastPressedc].LReleasedOther();  //cell that is being released was not pressed
 				}
 			}
 		}
 	}
 	
+	private void clickCell(int r, int c){
+		Cell s = grid[r][c];
+		s.LReleasedSame();
+		if(s.getState()==6){						//cell has value shown now
+			if(s.isBomb()){
+				explode = true;
+				showBombs();						//game lost, show where bombs are
+			}
+			else{									
+				if(s.isZero()){          			//if zero, automatically show adjacent cells
+					for(int i = r-1;i<=r+1;i++){
+						for(int j = c-1;j<=c+1;j++){
+							if(grid[r][c].isAdjacent(i,j)){
+								showAdj(i,j);
+							}
+						}
+					}
+				}
+				clicked++;
+				System.out.println("clicked: " + clicked);	//debugging info
+				System.out.println("count: " + Cell.count);
+				if(clicked==90){
+					markBombs();
+				}
+			}
+		}
+	}
+	
+	/*
+	 * Calculates number of flags around a cell
+	 */
 	private int calcFlags(int r, int c){
 		int v=0;
 		for(int i = r-1;i<=r+1;i++){             //using a 3x3 for loop to check adjacency, to cut down on if statements/code clutter
@@ -257,8 +262,8 @@ public class Grid extends JPanel{
 			if(over&&calcFlags(r,c)==grid[r][c].getVal()){
 				for(int i = r-1;i<=r+1;i++){
 					for(int j = c-1;j<=c+1;j++){
-						if(!explode&&grid[r][c].isAdjacent(i,j)){
-							showAdj(i,j);
+						if(!explode&&grid[r][c].isAdjacent(i,j)&&grid[i][j].getState()!=6){
+							clickCell(i,j);
 						}
 					}
 				}
@@ -266,12 +271,10 @@ public class Grid extends JPanel{
 			else{
 				r = lastPressedr;
 				c = lastPressedc;
-				if(validCoord(r,c)){
-					for(int i = r-1;i<=r+1;i++){
-						for(int j = c-1;j<=c+1;j++){
-							if(grid[r][c].isAdjacent(i,j)){
-								grid[i][j].LReleasedOther();
-							}
+				for(int i = r-1;i<=r+1;i++){
+					for(int j = c-1;j<=c+1;j++){
+						if(grid[r][c].isAdjacent(i,j)){
+							grid[i][j].LReleasedOther();
 						}
 					}
 				}
@@ -284,7 +287,7 @@ public class Grid extends JPanel{
 	 */
 	private void showAdj(int r, int c){
 		Cell s = grid[r][c];
-		if(s.getState()==0||s.getState()==1){
+		if(s.getState()==0){
 			s.showVal();
 			if(s.isBomb()){
 				explode = true;
