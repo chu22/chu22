@@ -34,7 +34,8 @@ public class Minesweeper extends JFrame {
 	private Menu m;				//menus
 	private HighScores h;		//high score holder
 	
-	private Timer time;			
+	private Timer time;
+	private boolean scoreRecorded;
 	private boolean firstClick;	//check if first click of the game, used in conjunction with Grid class firstClick variable to ensure 
 								//the timer/grid is not set until after the first valid click. 
 	
@@ -70,6 +71,7 @@ public class Minesweeper extends JFrame {
 		scoresTable = h.getTable();
 		
 		firstClick = true;
+		scoreRecorded = false;
 		
 		/* Add Event Handlers */
 		g.addMouseListener(new gridHandler());
@@ -115,15 +117,22 @@ public class Minesweeper extends JFrame {
 		remove(f);
 		remove(g);
 		remove(t);
+		
 		time.stop();
+		
 		g = new Grid();
 		t = new TimePanel();
 		f = new FlagPanel();
+		
 		firstClick = true;
+		scoreRecorded = false;
+		
 		g.addMouseListener(new gridHandler());
+		
 		add(f);
 		add(g);
 		add(t);
+		
 		f.setBounds(0, 0, Digit.width*2, Digit.height);
 		g.setBounds(0,ResetPanel.height + 5,Grid.width,Grid.height);
 		t.setBounds(FRAME_WIDTH-Digit.width*4, 0, Digit.width*4, Digit.height);
@@ -179,8 +188,9 @@ public class Minesweeper extends JFrame {
 				f.repaint();
 				if(g.gameWon()){
 					r.gameWon();															//set reset button to B-)
+					r.repaint();
 					Score s = new Score(t.getTime());										//create new score based on time
-					if(h.isTopTen(s)){														//if a top ten score
+					if(h.isTopTen(s)&&!scoreRecorded){														//if a top ten score
 						String name = (String)JOptionPane.showInputDialog(					//get user name
 			                    Minesweeper.this,
 			                    "Congratualations! You have a new high score!\n"
@@ -190,8 +200,7 @@ public class Minesweeper extends JFrame {
 							s.addName(name);												//add name to score
 							h.addScore(s);													//add score to high scores
 						}
-						
-						
+						scoreRecorded = true;
 					}
 				}
 				else{
