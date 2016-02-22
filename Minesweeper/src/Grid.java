@@ -26,8 +26,8 @@ public class Grid extends JPanel{
 	private boolean explode; 	//true if user clicks on a bomb
 	private boolean firstClick;	//true if user has not clicked
 	
-	private int lastPressedr;	//row of the cell the user last clicked
-	private int lastPressedc;	//col of the cell the user last clicked
+	private int lastPressedr;	//row of the cell the user last left clicked
+	private int lastPressedc;	//col of the cell the user last left clicked
 	
 	//game constants
 	private final int CELL_DIM = 16;
@@ -220,6 +220,21 @@ public class Grid extends JPanel{
 		}
 	}
 	
+/*	public void doubleMouseReleased(MouseEvent e){
+		int c = convertPos(e.getX());
+		int r = convertPos(e.getY());
+		boolean over = lastPressedr==r&&lastPressedc==c;
+		if(!explode&&clicked<90){
+			for(int i = r-1;i<=r+1;i++){
+				for(int j = c-1;j<=c+1;j++){
+					if(!explode&&grid[r][c].isAdjacent(i,j)){
+						showAdj(i,j);
+					}
+				}
+			}
+		}
+	}*/
+	
 	/*
 	 * Shows cell indicated by r and c, will recursively call if cell value is zero.
 	 */
@@ -227,18 +242,24 @@ public class Grid extends JPanel{
 		Cell s = grid[r][c];
 		if(s.getState()==0){
 			s.showVal();
-			clicked++;
-			System.out.println("clicked: " + clicked);  
-			System.out.println("count: " + Cell.count);
-			if(s.isZero()){						
-				for(int i = r-1;i<=r+1;i++){
-					for(int j = c-1;j<=c+1;j++){
-						if(grid[r][c].isAdjacent(i,j)){
-							showAdj(i,j);
+			/*if(s.isBomb()){
+				explode = true;
+				showBombs();
+			}*/
+			//else{
+				clicked++;
+				System.out.println("clicked: " + clicked);  
+				System.out.println("count: " + Cell.count);
+				if(s.isZero()){						
+					for(int i = r-1;i<=r+1;i++){
+						for(int j = c-1;j<=c+1;j++){
+							if(grid[r][c].isAdjacent(i,j)){
+								showAdj(i,j);
+							}
 						}
 					}
 				}
-			}
+			//}
 		}
 	}
 	

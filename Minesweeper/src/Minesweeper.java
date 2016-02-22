@@ -132,6 +132,10 @@ public class Minesweeper extends JFrame {
 	 /* EVENT HANDLERS */
 	
 	private class gridHandler implements MouseListener{
+		private static final int LEFT = MouseEvent.BUTTON1_DOWN_MASK;	//constant bit that indicates left mouse is down
+		private static final int RIGHT = MouseEvent.BUTTON3_DOWN_MASK;	//constant bit that indicates right mouse is down
+		private static final int BOTH = LEFT | RIGHT;					
+		private boolean bothDown = false;								//boolean to check if both mouse buttons are down
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -140,14 +144,20 @@ public class Minesweeper extends JFrame {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			g.mousePressed(e);					// Determine and manage program based on which button was clicked
-			f.setCount(g.getnFlags());			//Retrieves number of flags and updates the flag panel
-			g.repaint();
-			f.repaint();
-			if(!g.gameOver()){					//If game is not over, change :) into :O on reset button
-				r.gridPressed();
-				r.repaint();
+			bothDown = (e.getModifiersEx() & BOTH) == BOTH;	//get modifiers for event, which is a mask of which buttons are pressed, and compare with BOTH
+			if(!bothDown){							//disable actions if one mouse button is already pressed
+				g.mousePressed(e);					// Determine and manage program based on which button was clicked
+				f.setCount(g.getnFlags());			//Retrieves number of flags and updates the flag panel
+				g.repaint();
+				f.repaint();
+				if(!g.gameOver()){					//If game is not over, change :) into :O on reset button
+					r.gridPressed();
+					r.repaint();
+				}
 			}
+/*			else if(bothDown&&e.getButton() == MouseEvent.BUTTON1){
+				bothDown = false;
+			}*/
 			
 		}
 
@@ -181,11 +191,15 @@ public class Minesweeper extends JFrame {
 					}
 				}
 				else{
-					r.gameLost();				//set reset button to X_X
+					r.gameLost();						//set reset button to X_X
 				}
 			}
-			else{								//game not over
-				r.mouseReleased();				//reset reset button to :)
+			/*else if(bothDown&&(e.getModifiersEx() & BOTH)==0){
+				g.doubleMouseReleased(e);
+				r.mouseReleased();
+			}*/
+			else if((e.getModifiersEx() & BOTH)==0){	//game not over and neither mouse button is pressed			/
+				r.mouseReleased();						//change reset button to :)
 			}
 			r.repaint();
 			
