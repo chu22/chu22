@@ -43,8 +43,8 @@ public class Score implements Comparable<Score>, Serializable{
 
 	/* COMPARISON FUNCTIONS */
 	
-	public boolean greaterThan(Score s){
-		return score>s.score;
+	public boolean lessThan(Score s){
+		return score<s.score;
 	}
 	
 	@Override

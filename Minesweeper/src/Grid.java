@@ -196,6 +196,79 @@ public class Grid extends JPanel{
 		}
 	}
 	
+	public void doubleMousePressed(MouseEvent e){
+		int c = convertPos(e.getX());
+		int r = convertPos(e.getY());
+		boolean over = lastPressedr==r&&lastPressedc==c;
+		if(!explode&&clicked<90&&over&&grid[r][c].getState()==6){		//if second button press is over same cell as first button press, and cell is already clicked
+			for(int i = r-1;i<=r+1;i++){
+				for(int j = c-1;j<=c+1;j++){
+					if(grid[r][c].isAdjacent(i,j)){
+						grid[i][j].LPressed();							//press adjacent cells
+					}
+				}
+			}
+		}
+	}
+	
+	public void doubleMouseReleased(MouseEvent e){
+		int c = convertPos(e.getX());
+		int r = convertPos(e.getY());
+		boolean over = lastPressedr==r&&lastPressedc==c;
+		if(!explode&&clicked<90){
+			if(over&&calcFlags(r,c)==grid[r][c].getVal()){				//if mouse is over last cell pressed, correct number of adjacent flags
+				for(int i = r-1;i<=r+1;i++){
+					for(int j = c-1;j<=c+1;j++){
+						if(!explode&&grid[r][c].isAdjacent(i,j)&&grid[i][j].getState()!=6){
+							clickCell(i,j);								//simulate left click on each adjacent unclicked cell
+						}
+					}
+				}
+			}
+			else{														//otherwise, unpress buttons pressed by doubleMousePressed function
+				r = lastPressedr;
+				c = lastPressedc;
+				for(int i = r-1;i<=r+1;i++){
+					for(int j = c-1;j<=c+1;j++){
+						if(grid[r][c].isAdjacent(i,j)){
+							grid[i][j].LReleasedOther();
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/* MOUSE EVENT HELPER FUNCTIONS */
+	
+	/*
+	 * Shows cell indicated by r and c, will recursively call if cell value is zero.
+	 */
+	private void showAdj(int r, int c){
+		Cell s = grid[r][c];
+		if(s.getState()==0){
+			s.showVal();
+			clicked++;
+			if(clicked==90){
+				markBombs();
+			}
+			System.out.println("clicked: " + clicked);  
+			System.out.println("count: " + Cell.count);
+			if(s.isZero()){						
+				for(int i = r-1;i<=r+1;i++){
+					for(int j = c-1;j<=c+1;j++){
+						if(grid[r][c].isAdjacent(i,j)){
+							showAdj(i,j);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/*
+	 * Helper function used to minimize duplicate code -- used in both mouseReleased and doubleMouseReleased
+	 */
 	private void clickCell(int r, int c){
 		Cell s = grid[r][c];
 		s.LReleasedSame();
@@ -238,81 +311,6 @@ public class Grid extends JPanel{
 		}
 		return v;
 	}
-	
-	public void doubleMousePressed(MouseEvent e){
-		int c = convertPos(e.getX());
-		int r = convertPos(e.getY());
-		boolean over = lastPressedr==r&&lastPressedc==c;
-		if(!explode&&clicked<90&&over&&grid[r][c].getState()==6){	
-			for(int i = r-1;i<=r+1;i++){
-				for(int j = c-1;j<=c+1;j++){
-					if(grid[r][c].isAdjacent(i,j)){
-						grid[i][j].LPressed();
-					}
-				}
-			}
-		}
-	}
-	
-	public void doubleMouseReleased(MouseEvent e){
-		int c = convertPos(e.getX());
-		int r = convertPos(e.getY());
-		boolean over = lastPressedr==r&&lastPressedc==c;
-		if(!explode&&clicked<90){
-			if(over&&calcFlags(r,c)==grid[r][c].getVal()){
-				for(int i = r-1;i<=r+1;i++){
-					for(int j = c-1;j<=c+1;j++){
-						if(!explode&&grid[r][c].isAdjacent(i,j)&&grid[i][j].getState()!=6){
-							clickCell(i,j);
-						}
-					}
-				}
-			}
-			else{
-				r = lastPressedr;
-				c = lastPressedc;
-				for(int i = r-1;i<=r+1;i++){
-					for(int j = c-1;j<=c+1;j++){
-						if(grid[r][c].isAdjacent(i,j)){
-							grid[i][j].LReleasedOther();
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	/*
-	 * Shows cell indicated by r and c, will recursively call if cell value is zero.
-	 */
-	private void showAdj(int r, int c){
-		Cell s = grid[r][c];
-		if(s.getState()==0){
-			s.showVal();
-			if(s.isBomb()){
-				explode = true;
-				showBombs();
-			}
-			else{
-				clicked++;
-				if(clicked==90){
-					markBombs();
-				}
-				System.out.println("clicked: " + clicked);  
-				System.out.println("count: " + Cell.count);
-				if(s.isZero()){						
-					for(int i = r-1;i<=r+1;i++){
-						for(int j = c-1;j<=c+1;j++){
-							if(grid[r][c].isAdjacent(i,j)){
-								showAdj(i,j);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	
 	/*
 	 * Changes all bombs on grid to BOMB label

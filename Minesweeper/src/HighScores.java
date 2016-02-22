@@ -51,7 +51,7 @@ public class HighScores {
 	/* FUNCTIONS TO CHANGE HIGH SCORES LIST */
 	
 	public boolean isTopTen(Score s){
-		return scores.size()<MAX||s.greaterThan(scores.get(scores.size()-1));
+		return scores.size()<MAX||s.lessThan(scores.get(scores.size()-1));
 	}
 	
 	public void addScore(Score s){	
