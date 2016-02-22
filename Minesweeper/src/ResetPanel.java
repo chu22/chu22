@@ -21,9 +21,7 @@ public class ResetPanel extends JPanel{
 	private static final Image HEAD_O = new ImageIcon(smiley_names[2]).getImage();						
 	private static final Image WIN = new ImageIcon(smiley_names[3]).getImage();				
 	private static final Image LOSE = new ImageIcon(smiley_names[4]).getImage();
-	
 
-	
 	private Image label;
 	
 	public ResetPanel(){

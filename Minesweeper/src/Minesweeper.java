@@ -125,7 +125,6 @@ public class Minesweeper extends JFrame {
 	
 	//Event Handlers
 	
-	
 	private class gridHandler implements MouseListener{
 		
 		@Override
@@ -218,9 +217,13 @@ public class Minesweeper extends JFrame {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			int x = e.getX();
+			int y = e.getY();
 			r.mouseReleased();
 			r.repaint();
-			reset();
+			if(x>=0&&x<=ResetPanel.width&&y>=0&&y<=ResetPanel.height){
+				reset();
+			}
 		}
 
 		@Override
@@ -320,7 +323,6 @@ public class Minesweeper extends JFrame {
 		   return str;
 		 }
 
-	
 	private class helpMenuHandler implements ActionListener{
 
 		@Override
@@ -334,6 +336,7 @@ public class Minesweeper extends JFrame {
 
 		
 	}
+	
 	private class aboutMenuHandler implements ActionListener{
 
 		@Override

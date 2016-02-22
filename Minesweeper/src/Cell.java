@@ -39,7 +39,7 @@ public class Cell {
 	public static int count;				//used for debugging
 	
 	
-	/* CELL CONSTRUCTOR/INITIALIZATION METHODS */
+	/* CONSTRUCTOR/INITIALIZATION METHODS */
 	
 	public Cell(int row, int col){
 		r = row;

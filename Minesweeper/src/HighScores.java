@@ -27,17 +27,19 @@ import javax.swing.table.DefaultTableModel;
 
 public class HighScores {
 	
-	private ArrayList<Score> scores;
-	private JTable scoreTable;
-	private DefaultTableModel model;
+	private ArrayList<Score> scores;		//top scores list
+	private JTable scoreTable;				//JTable element to display scores
 	
-	private final int MAX = 10;
-	private final String[] COL_NAMES = {"  ","Name", "Score"};
+	private final int MAX = 10;				//number of scores to hold
+	private final String[] COL_NAMES = 		//JTable column names
+		{"  ","Name", "Score"};
 	
-	private static final String SCORE_FILE = "scores.dat";
+	private static final String SCORE_FILE = "scores.dat";	//name of file high scores are saved to
 	 
-	ObjectOutputStream out = null;
-	ObjectInputStream in = null;
+	ObjectOutputStream out = null;			//used to write Scores to file
+	ObjectInputStream in = null;			//used to read Scores from file
+	
+	/* CONSTRUCTOR/INITIALIZATION FUNCTIONS */
 	
 	public HighScores(){
 		scores = new ArrayList<Score>(MAX);
@@ -45,6 +47,8 @@ public class HighScores {
 		loadScoreFile();
 		updateTable();
 	}
+	
+	/* FUNCTIONS TO CHANGE HIGH SCORES LIST */
 	
 	public boolean isTopTen(Score s){
 		return scores.size()<MAX||s.greaterThan(scores.get(scores.size()-1));
@@ -63,13 +67,14 @@ public class HighScores {
 		updateScoreFile();
 	}
 	
+	/* FILE MANIPULATION FUNCTIONS */
+	
 	private void loadScoreFile() {
         try {
             in = new ObjectInputStream(new FileInputStream(SCORE_FILE));
             scores = (ArrayList<Score>) in.readObject();
         } catch (FileNotFoundException e) {
             System.out.println("FNF Error: " + e.getMessage());
-            
         } catch (IOException e) {
             System.out.println("IO Error: " + e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -91,7 +96,7 @@ public class HighScores {
             out.writeObject(scores);
             updateTable();
         } catch (FileNotFoundException e) {
-            System.out.println("FNF Error: " + e.getMessage() + ",the program will try and make a new file");
+            System.out.println("FNF Error: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("IO Error: " + e.getMessage());
         } finally {
@@ -110,20 +115,7 @@ public class HighScores {
 		updateScoreFile();
 	}
 	
-	
-	public String printScores(){
-		String str = "     Name\t\tScore\n";
-		int ctr = 1;
-		for(Score s : scores){
-			str = str + ctr + ". " + s.getName() + "\t\t" + s.getScore() + "\n";
-			ctr++;
-		}
-		while(ctr<10){
-			str = str + ctr +".\n";
-			ctr++;
-		}
-		return str;
-	}
+	/* JTABLE FUNCTIONS/GETTER */
 	
 	private void updateTable(){
 		String[][] scoreGrid = new String[10][3];
@@ -140,8 +132,7 @@ public class HighScores {
 			scoreGrid[ctr][2] = "";
 			ctr++;
 		}
-		model = new DefaultTableModel(scoreGrid, COL_NAMES);
-		scoreTable.setModel(model);
+		scoreTable.setModel(new DefaultTableModel(scoreGrid, COL_NAMES));
 		scoreTable.getColumnModel().getColumn(0).setPreferredWidth(25);
 		scoreTable.getColumnModel().getColumn(1).setPreferredWidth(235);
 		scoreTable.getColumnModel().getColumn(2).setPreferredWidth(40);

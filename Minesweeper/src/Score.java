@@ -21,7 +21,9 @@ public class Score implements Comparable<Score>, Serializable{
 	private int score;
 	private String name;
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;  //allows Object Input/Output streams to read/write object data
+	
+	/* CONSTRUCTOR/SETTERS/GETTERS */
 	
 	public Score(int x){
 		score = x;
@@ -29,14 +31,6 @@ public class Score implements Comparable<Score>, Serializable{
 	
 	public void addName(String n){
 		name = n;
-	}
-	
-	public boolean lessThan(Score s){
-		return score<s.score;
-	}
-	
-	public boolean greaterThan(Score s){
-		return score>s.score;
 	}
 	
 	public String getName(){
@@ -47,6 +41,12 @@ public class Score implements Comparable<Score>, Serializable{
 		return score;
 	}
 
+	/* COMPARISON FUNCTIONS */
+	
+	public boolean greaterThan(Score s){
+		return score>s.score;
+	}
+	
 	@Override
 	public int compareTo(Score o) {
 		return score - o.score;

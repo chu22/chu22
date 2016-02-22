@@ -29,7 +29,6 @@ public class Grid extends JPanel{
 	private int lastPressedr;	//row of the cell the user last clicked
 	private int lastPressedc;	//col of the cell the user last clicked
 	
-	
 	//game constants
 	private final int CELL_DIM = 16;
 	private final int N_ROWS = 10;
@@ -39,7 +38,7 @@ public class Grid extends JPanel{
 	public static final int height = 160;
 	public static final int width = 160;
 	
-	/* GRID CONSTRUCTOR/INITIALIZATION FUNCTIONS */
+	/* CONSTRUCTOR/INITIALIZATION FUNCTIONS */
 	
 	public Grid(){
 		grid = new Cell[N_ROWS][N_COLS];

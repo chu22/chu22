@@ -15,7 +15,6 @@
 
 import java.awt.Graphics;
 import java.awt.Image;
-
 import javax.swing.JPanel;
 
 public class TimePanel extends JPanel{
