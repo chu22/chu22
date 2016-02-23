@@ -36,9 +36,6 @@ public class Cell {
 	public static final int height = 16;		//cell height
 	public static final int width = 16;			//cell width
 	
-	public static int count;				//used for debugging
-	
-	
 	/* CONSTRUCTOR/INITIALIZATION METHODS */
 	
 	public Cell(int row, int col){
@@ -47,7 +44,6 @@ public class Cell {
 		val = -2;  //initializing to -2 just to mark that the square value hasn't been calculated yet 
 		label = NORM;
 		state = 0;
-		count = 0;
 	}
 	
 	/*
@@ -139,7 +135,6 @@ public class Cell {
 		else if(label==NORM_P){
 				label = VAL;		//show value
 				state = 6;
-				count++;
 		}
 	}
 	
@@ -214,6 +209,5 @@ public class Cell {
 	public void showVal(){
 		label = VAL;
 		state = 6;
-		count++;
 	}
 }

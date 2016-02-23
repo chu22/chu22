@@ -252,8 +252,6 @@ public class Grid extends JPanel{
 			if(clicked==90){
 				markBombs();
 			}
-			System.out.println("clicked: " + clicked);  
-			System.out.println("count: " + Cell.count);
 			if(s.isZero()){						
 				for(int i = r-1;i<=r+1;i++){
 					for(int j = c-1;j<=c+1;j++){
@@ -288,8 +286,6 @@ public class Grid extends JPanel{
 					}
 				}
 				clicked++;
-				System.out.println("clicked: " + clicked);	//debugging info
-				System.out.println("count: " + Cell.count);
 				if(clicked==90){
 					markBombs();
 				}

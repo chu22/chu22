@@ -244,8 +244,19 @@ public class Minesweeper extends JFrame {
 		public void mouseReleased(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
-			r.mouseReleased();
-			r.repaint();
+			if(!g.gameOver()){
+				r.mouseReleased();
+				r.repaint();
+			}
+			else{
+				if(g.gameWon()){
+					r.gameWon();
+				}
+				else{
+					r.gameLost();
+				}
+				r.repaint();
+			}
 			if(x>=0&&x<=ResetPanel.width&&y>=0&&y<=ResetPanel.height){
 				reset();
 			}
