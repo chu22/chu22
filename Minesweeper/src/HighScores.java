@@ -136,6 +136,7 @@ public class HighScores {
 		scoreTable.getColumnModel().getColumn(0).setPreferredWidth(25);
 		scoreTable.getColumnModel().getColumn(1).setPreferredWidth(235);
 		scoreTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+		scoreTable.setEnabled(false);
 	}
 	
 	public JTable getTable(){
