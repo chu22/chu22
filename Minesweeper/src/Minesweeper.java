@@ -110,7 +110,6 @@ public class Minesweeper extends JFrame {
 				}
 			}
 		});
-
 	}
 	
 	public void reset(){
@@ -147,9 +146,7 @@ public class Minesweeper extends JFrame {
 		private boolean bothDown = false;								//boolean to check if both mouse buttons are down
 		
 		@Override
-		public void mouseClicked(MouseEvent e) {
-				
-		}
+		public void mouseClicked(MouseEvent e) {}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
@@ -167,8 +164,7 @@ public class Minesweeper extends JFrame {
 			else{
 				g.doubleMousePressed(e);
 				g.repaint();
-			}
-			
+			}	
 		}
 
 		@Override
@@ -211,33 +207,24 @@ public class Minesweeper extends JFrame {
 				r.mouseReleased();						//change reset button to :)
 			}
 			r.repaint();
-			
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
-			
-		}
+		public void mouseEntered(MouseEvent e) {}
 
 		@Override
-		public void mouseExited(MouseEvent e) {
-			
-		}
-		
+		public void mouseExited(MouseEvent e) {}
 	}
 		
 	private class ResetHandler implements MouseListener{
 
 		@Override
-		public void mouseClicked(MouseEvent e) {
-			
-		}
+		public void mouseClicked(MouseEvent e) {}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			r.resetPressed();
-			r.repaint();
-			
+			r.repaint();	
 		}
 
 		@Override
@@ -263,15 +250,10 @@ public class Minesweeper extends JFrame {
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
-			
-		}
+		public void mouseEntered(MouseEvent e) {}
 
 		@Override
-		public void mouseExited(MouseEvent e) {
-			
-		}
-		
+		public void mouseExited(MouseEvent e) {}
 	}
 	
 	private class TimerHandler implements ActionListener{
@@ -280,9 +262,7 @@ public class Minesweeper extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			t.incTime();
 			t.repaint();
-			
-		}
-		
+		}	
 	}
 	
 	private class resetMenuHandler implements ActionListener{
@@ -292,7 +272,6 @@ public class Minesweeper extends JFrame {
 			r.mouseReleased();
 			reset();
 		}
-		
 	}
 	
 	private class scoresMenuHandler implements ActionListener{
@@ -303,15 +282,11 @@ public class Minesweeper extends JFrame {
 			scoresPane.getViewport().remove( scoresTable );		//remove old table and add new table to high scores scrollpane
 			scoresTable = h.getTable();
 			scoresPane.getViewport().add( scoresTable );
-			
 			JOptionPane.showMessageDialog(Minesweeper.this,
 				    scoresPane,
 				    "High Scores",
 				    JOptionPane.PLAIN_MESSAGE);
-			
-			
 		}
-		
 	}
 	
 	private class resetScoresMenuHandler implements ActionListener{
@@ -320,7 +295,6 @@ public class Minesweeper extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			h.resetScoreFile();
 		}
-		
 	}
 	
 	private class exitMenuHandler implements ActionListener{
@@ -329,7 +303,6 @@ public class Minesweeper extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			System.exit(0);
 		}
-		
 	}
 
 	 /* 
@@ -370,8 +343,6 @@ public class Minesweeper extends JFrame {
 		        "Help",
 		        JOptionPane.PLAIN_MESSAGE);
 		  }
-
-		
 	}
 	
 	private class aboutMenuHandler implements ActionListener{
@@ -386,6 +357,5 @@ public class Minesweeper extends JFrame {
 						        JOptionPane.PLAIN_MESSAGE);
 		
 		}
-
 	}
 }

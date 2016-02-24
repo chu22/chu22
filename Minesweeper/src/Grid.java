@@ -77,8 +77,7 @@ public class Grid extends JPanel{
 				bombs[ctr]=grid[r][c];
 				ctr++;
 			}
-		}
-		
+		}	
 	}
 	
 	private void setBoard(){
@@ -351,6 +350,4 @@ public class Grid extends JPanel{
 	private boolean validCoord(int r, int c){
 		return r<10&&r>=0&&c<10&&c>=0;
 	}
-	
-	
 }

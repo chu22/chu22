@@ -151,8 +151,7 @@ public class Cell {
 		else if(label==NORM_P){
 			label = NORM;			//change back to normal
 			state = 0;
-		}
-		
+		}	
 	}
 	
 	/*

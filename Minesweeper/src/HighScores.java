@@ -140,6 +140,5 @@ public class HighScores {
 	
 	public JTable getTable(){
 		return scoreTable;
-	}
-	
+	}	
 }
