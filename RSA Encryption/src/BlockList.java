@@ -19,4 +19,12 @@ public class BlockList {
 	public ArrayList<String> getBlocks(){
 		return blocks;
 	}
+	
+	public String convertChar(char c){
+		
+	}
+	
+	public char convertTroy(String s){
+		
+	}
 }
